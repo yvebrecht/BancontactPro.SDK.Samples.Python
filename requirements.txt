@@ -1,0 +1,5 @@
+# The package is not published yet: install the sister folder (clone BancontactPro.Python next to this repo).
+-e ../BancontactPro.Python
+starlette>=0.40
+uvicorn>=0.30
+python-dotenv>=1.0

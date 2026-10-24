@@ -1,0 +1,12 @@
+# The build context is the folder above both repositories: keep everything but what the build needs.
+*
+!BancontactPro.Python/pyproject.toml
+!BancontactPro.Python/README.md
+!BancontactPro.Python/LICENSE
+!BancontactPro.Python/src/**
+!BancontactPro.SDK.Samples.Python/requirements.txt
+!BancontactPro.SDK.Samples.Python/run.py
+!BancontactPro.SDK.Samples.Python/sample_web/**
+!BancontactPro.SDK.Samples.Python/public/**
+**/__pycache__
+**/.venv

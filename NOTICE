@@ -1,0 +1,11 @@
+BancontactPro.SDK.Samples.Python, samples for the unofficial Python client for the Bancontact Pro APIs
+Copyright 2026 Axel Dewaele
+
+Licensed under the Apache License, Version 2.0 (see the LICENSE file).
+
+This is an independent, unofficial project. It is not affiliated with,
+endorsed by or sponsored by Bancontact. "Bancontact" and "Bancontact Pro"
+are trademarks of their respective owner. The names are used in this
+project only to describe what the software works with. The licence does
+not grant any right in those trademarks, and the copyright holder does
+not claim any.

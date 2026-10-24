@@ -1,0 +1,24 @@
+# The sample web UI in Docker. From this folder, with BancontactPro.Python cloned next to this repository:
+#   cp .env.example .env    # fill in the credentials
+#   docker compose up --build
+# then open http://localhost:5086. The port is published on 127.0.0.1 only: the app has no login and calls Bancontact with your credentials.
+services:
+  sample-web:
+    build:
+      context: ..
+      dockerfile: BancontactPro.SDK.Samples.Python/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${SAMPLE_WEB_PORT:-5086}:8080"
+    environment:
+      # The address Bancontact reaches the callback at (a tunnel to the published port), no trailing slash.
+      PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-http://localhost:5086}
+      BANCONTACT_ENVIRONMENT: ${BANCONTACT_ENVIRONMENT:-Preprod}
+      BANCONTACT_ONDISPLAY_API_KEY: ${BANCONTACT_ONDISPLAY_API_KEY:-}
+      BANCONTACT_ONDISPLAY_PPID: ${BANCONTACT_ONDISPLAY_PPID:-}
+      BANCONTACT_ONRECEIPT_API_KEY: ${BANCONTACT_ONRECEIPT_API_KEY:-}
+      BANCONTACT_ONRECEIPT_PPID: ${BANCONTACT_ONRECEIPT_PPID:-}
+      BANCONTACT_STATICQR_API_KEY: ${BANCONTACT_STATICQR_API_KEY:-}
+      BANCONTACT_STATICQR_PPID: ${BANCONTACT_STATICQR_PPID:-}
+      BANCONTACT_TOPUP_API_KEY: ${BANCONTACT_TOPUP_API_KEY:-}
+      BANCONTACT_TOPUP_PPID: ${BANCONTACT_TOPUP_PPID:-}
