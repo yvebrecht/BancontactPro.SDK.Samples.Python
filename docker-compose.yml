@@ -1,15 +1,18 @@
-# The sample web UI in Docker. From this folder, with BancontactPro.Python cloned next to this repository:
+# The sample web UI in Docker, from the prebuilt image (built by .github/workflows/sample-web-image.yml and published to
+# GitHub Container Registry). Works as a stack in Portainer and any other tool that cannot run a build. From this folder:
 #   cp .env.example .env    # fill in the credentials
-#   docker compose up --build
-# then open http://localhost:5086. The port is published on 127.0.0.1 only: the app has no login and calls Bancontact with your credentials.
+#   docker compose up -d
+# then open http://localhost:5086. To build the image yourself instead (needs BancontactPro.Python cloned next to this repository):
+#   docker compose -f docker-compose.yml -f docker-compose.build.yml up --build
+#
+# The port is published on 127.0.0.1 only: the app has no login and calls Bancontact with your credentials. On a server, put
+# a reverse proxy with its own login in front of it, or set SAMPLE_WEB_BIND to another address on purpose.
 services:
   sample-web:
-    build:
-      context: ..
-      dockerfile: BancontactPro.SDK.Samples.Python/Dockerfile
+    image: ${SAMPLE_WEB_IMAGE:-ghcr.io/yvebrecht/bancontactpro-sample-web-python:latest}
     restart: unless-stopped
     ports:
-      - "127.0.0.1:${SAMPLE_WEB_PORT:-5086}:8080"
+      - "${SAMPLE_WEB_BIND:-127.0.0.1}:${SAMPLE_WEB_PORT:-5086}:8080"
     environment:
       # The address Bancontact reaches the callback at (a tunnel to the published port), no trailing slash.
       PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-http://localhost:5086}
