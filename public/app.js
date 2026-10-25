@@ -54,6 +54,8 @@ function renderEntry(e) {
   }
   details.append(
     ...headersBlock('Request headers', e.requestHeaders),
+    ...bodyBlock('Signature analysis', e.analysis),
+    ...bodyBlock('Raw request body (exact bytes)', e.rawRequestBody),
     ...bodyBlock('Request body', e.requestBody),
     ...headersBlock('Response headers', e.responseHeaders),
     ...bodyBlock(e.kind === 'request' ? 'Response body' : 'Result', e.responseBody));

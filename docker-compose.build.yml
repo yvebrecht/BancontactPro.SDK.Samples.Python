@@ -1,0 +1,8 @@
+# Builds the image locally instead of pulling it. The build context is the folder that holds both repositories, because the
+# sample depends on the sister folder BancontactPro.Python:
+#   docker compose -f docker-compose.yml -f docker-compose.build.yml up --build
+services:
+  sample-web:
+    build:
+      context: ..
+      dockerfile: BancontactPro.SDK.Samples.Python/Dockerfile

@@ -30,6 +30,7 @@ from starlette.staticfiles import StaticFiles
 
 from . import views
 from .debug import DebugLog, DebugTransport, pretty
+from .diagnostics import analyse_signature
 
 CALLBACK_PATH = "/bancontact/callback"
 PRODUCTS = {p.value: p for p in BancontactProduct}
@@ -202,12 +203,13 @@ async def bancontact_callback(request: Request) -> Response:
     """Bancontact calls this when a payment changes. Every call is logged, valid or not, with the Signature header and the exact body."""
     body = await request.body()
     text = body.decode("utf-8", errors="replace")
+    analysis = analyse_signature(request.headers.get("signature", ""), body)
     received = dict(request.headers)
     try:
         # The exact bytes received: re-serialising a parsed body first would change them and break the signature.
         verified = await factory.callback_verifier().verify_and_parse(request.headers.get("signature", ""), body, request.url.path)
     except InvalidCallbackException as exc:
-        debug.add("callback", "Callback rejected", method="POST", url=request.url.path, status=401, requestHeaders=received, requestBody=pretty(text), error=str(exc))
+        debug.add("callback", "Callback rejected", method="POST", url=request.url.path, status=401, requestHeaders=received, requestBody=pretty(text), rawRequestBody=text, analysis=analysis, error=str(exc))
         return Response(status_code=401)
 
     payload = verified.payload
@@ -234,6 +236,8 @@ async def bancontact_callback(request: Request) -> Response:
         status=200,
         requestHeaders=received,
         requestBody=pretty(text),
+        rawRequestBody=text,
+        analysis=analysis,
         responseBody=f"Signature valid. Bancontact request ID: {verified.request_id}",
     )
     return Response(status_code=200)
