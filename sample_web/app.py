@@ -107,7 +107,7 @@ async def qr_route(request: Request) -> Response:
         "amount": params.get("amount", "100"),
         "description": params.get("description", "sample"),
         "reference": params.get("reference", ""),
-        "posId": params.get("posId", "pos-1"),
+        "posId": params.get("posId", "POS00001"),
         "format": params.get("format", "PNG"),
     }
     if "product" not in params:
@@ -169,7 +169,7 @@ async def api_create_payment(request: Request) -> Response:
             created = await payments.create_static_qr_payment(
                 CreateStaticQrPaymentRequest(
                     amount=int(body["amount"]),
-                    pos_id=(body.get("posId") or "pos-1").strip(),
+                    pos_id=(body.get("posId") or "POS00001").strip(),
                     description=description,
                     reference=reference,
                     callback_url=callback_url(),
